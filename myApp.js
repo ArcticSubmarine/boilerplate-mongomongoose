@@ -151,9 +151,10 @@ var findPeopleByName = function(personName, done) {
 // argument `food` as search key
 
 var findOneByFood = function(food, done) {
-
-  done(null/*, data*/);
-  
+  Person.findOne({favoriteFoods: food}, function(err, data){
+    if(err) return console.log(err);
+    done(null, data);
+  });  
 };
 
 /** 7) Use `Model.findById()` */
@@ -166,9 +167,10 @@ var findOneByFood = function(food, done) {
 // Use the function argument 'personId' as search key.
 
 var findPersonById = function(personId, done) {
-  
-  done(null/*, data*/);
-  
+  Person.findById({_id: personId}, function(err, data){
+    if(err) return console.log(err);
+    done(null, data);
+  });  
 };
 
 /** # CR[U]D part III - UPDATE # 
@@ -197,10 +199,18 @@ var findPersonById = function(personId, done) {
 // (http://mongoosejs.com/docs/schematypes.html - #Mixed )
 
 var findEditThenSave = function(personId, done) {
-  var foodToAdd = 'hamburger';
-  
-  done(null/*, data*/);
-};
+  var foodToAdd = "hamburger";
+  Person.findById(personId, (err, data) => {
+    console.log("data", data.favoriteFoods);
+    data.favoriteFoods.push(foodToAdd);
+    data.save((err, data) => {
+      if (err) {
+        done(err);
+      }
+      done(null, data);
+    });
+  });
+}
 
 /** 9) New Update : Use `findOneAndUpdate()` */
 
