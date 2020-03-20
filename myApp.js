@@ -17,6 +17,7 @@
 var mongoose = require('mongoose');
 var schema = mongoose.Schema;
 mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.set('useFindAndModify', false);
 
 
 /** # SCHEMAS and MODELS #
@@ -215,7 +216,7 @@ var findEditThenSave = function(personId, done) {
 /** 9) New Update : Use `findOneAndUpdate()` */
 
 // Recent versions of `mongoose` have methods to simplify documents updating.
-// Some more advanced features (i.e. pre/post hooks, validation) beahve
+// Some more advanced features (i.e. pre/post hooks, validation) behave
 // differently with this approach, so the 'Classic' method is still useful in
 // many situations. `findByIdAndUpdate()` can be used when searching by Id.
 //
@@ -229,8 +230,11 @@ var findEditThenSave = function(personId, done) {
 
 var findAndUpdate = function(personName, done) {
   var ageToSet = 20;
-
-  done(null/*, data*/);
+  Person.findOneAndUpdate({name: personName}, {age: ageToSet}, {new: true}, function(err, data){
+    if(err){done(err);}
+    done(null, data);
+  });
+  
 };
 
 /** # CRU[D] part IV - DELETE #
