@@ -16,11 +16,11 @@
 
 var mongoose = require("mongoose");
 var schema = mongoose.Schema;
-/*mongoose.connect(process.env.MONGO_URI, {
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
-mongoose.set("useFindAndModify", false);*/
+mongoose.set("useFindAndModify", false);
 
 /** # SCHEMAS and MODELS #
 /*  ====================== */
@@ -252,14 +252,14 @@ var findAndUpdate = function(personName, done) {
 // previous update methods. They pass the removed document to the cb.
 // As usual, use the function argument `personId` as search key.
 
-/*var removeById = function(personId, done) {
+var removeById = function(personId, done) {
   Person.findByIdAndRemove({ _id: personId }, function(err, data) {
     if (err) {
       done(err);
     }
     done(null, data);
   });
-};*/
+};
 
 /** 11) Delete many People */
 
@@ -271,7 +271,7 @@ var findAndUpdate = function(personName, done) {
 // containing the outcome of the operation, and the number of items affected.
 // Don't forget to pass it to the `done()` callback, since we use it in tests.
 
-/*var removeManyPeople = function(done) {
+var removeManyPeople = function(done) {
   var nameToRemove = "Mary";
   Person.deleteMany({ name: nameToRemove }, function(err, data) {
     if (err) {
@@ -279,7 +279,7 @@ var findAndUpdate = function(personName, done) {
     }
     done(null, data);
   });
-};*/
+};
 
 /** # C[R]UD part V -  More about Queries # 
 /*  ======================================= */
@@ -338,6 +338,6 @@ exports.findPersonById = findPersonById;
 exports.findEditThenSave = findEditThenSave;
 exports.findAndUpdate = findAndUpdate;
 exports.createManyPeople = createManyPeople;
-//exports.removeById = removeById;
-//exports.removeManyPeople = removeManyPeople;
+exports.removeById = removeById;
+exports.removeManyPeople = removeManyPeople;
 exports.queryChain = queryChain;
