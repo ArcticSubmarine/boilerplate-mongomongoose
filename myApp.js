@@ -1,24 +1,26 @@
 /**********************************************
-* 3. FCC Mongo & Mongoose Challenges
-* ==================================
-***********************************************/
+ * 3. FCC Mongo & Mongoose Challenges
+ * ==================================
+ ***********************************************/
 
 /** # MONGOOSE SETUP #
 /*  ================== */
 
 /** 1) Install & Set up mongoose */
 
-// Add mongodb and mongoose to the project's package.json. Then require 
-// mongoose. Store your Mongo Atlas database URI in the private .env file 
+// Add mongodb and mongoose to the project's package.json. Then require
+// mongoose. Store your Mongo Atlas database URI in the private .env file
 // as MONGO_URI. Connect to the database using the following syntax:
 //
-// mongoose.connect(<Your URI>, { useNewUrlParser: true, useUnifiedTopology: true }); 
+// mongoose.connect(<Your URI>, { useNewUrlParser: true, useUnifiedTopology: true });
 
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 var schema = mongoose.Schema;
-mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true});
-mongoose.set('useFindAndModify', false);
-
+/*mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
+mongoose.set("useFindAndModify", false);*/
 
 /** # SCHEMAS and MODELS #
 /*  ====================== */
@@ -45,14 +47,13 @@ mongoose.set('useFindAndModify', false);
 
 // <Your code here >
 
-
 var personSchema = new schema({
-  name:  {type: String, required: true},
-  age:  Number,
-  favoriteFoods:  [String]
+  name: { type: String, required: true },
+  age: Number,
+  favoriteFoods: [String]
 });
 
-var Person = mongoose.model('Person', personSchema);
+var Person = mongoose.model("Person", personSchema);
 
 // **Note**: Glitch is a real server, and in real servers interactions with
 // the db are placed in handler functions, to be called when some event happens
@@ -80,7 +81,7 @@ var Person = mongoose.model('Person', personSchema);
 // and `favoriteFoods`. Their types must be conformant to the ones in
 // the Person `Schema`. Then call the method `document.save()` on the returned
 // document instance, passing to it a callback using the Node convention.
-// This is a common pattern, all the **CRUD** methods take a callback 
+// This is a common pattern, all the **CRUD** methods take a callback
 // function like this as the last argument.
 
 // - Example -
@@ -89,19 +90,17 @@ var Person = mongoose.model('Person', personSchema);
 //    ...do your stuff here...
 // });
 
-var createAndSavePerson = function(done){
+var createAndSavePerson = function(done) {
   var me = new Person({
-      name:  "Clarisse",
-      age:  23,
-      favouriteFoods:  ["Cheese", "Chocolate"]
-    });
-  me.save(function(err, data){
-    if(err) return console.err;
+    name: "Clarisse",
+    age: 23,
+    favouriteFoods: ["Cheese", "Chocolate"]
+  });
+  me.save(function(err, data) {
+    if (err) return console.err;
     done(null, data);
   });
 };
-    
-    
 
 /** 4) Create many People with `Model.create()` */
 
@@ -113,15 +112,15 @@ var createAndSavePerson = function(done){
 // 'arrayOfPeople'.
 
 var arrayOfPeople = [
-  {name: "Anna", age: 23, favoriteFoods: ["Chocolat", "Lardons"]}, 
-  {name: "Héliot", age: 8, favoriteFoods: ["Dog food", "Anything"]}
+  { name: "Anna", age: 23, favoriteFoods: ["Chocolat", "Lardons"] },
+  { name: "Héliot", age: 8, favoriteFoods: ["Dog food", "Anything"] }
 ];
 
 var createManyPeople = function(arrayOfPeople, done) {
-    Person.create(arrayOfPeople, function(err, people){
-      if(err) return console.log(err);
-      done(null, people);
-    }); 
+  Person.create(arrayOfPeople, function(err, people) {
+    if (err) return console.log(err);
+    done(null, people);
+  });
 };
 
 /** # C[R]UD part II - READ #
@@ -136,8 +135,8 @@ var createManyPeople = function(arrayOfPeople, done) {
 // Use the function argument `personName` as search key.
 
 var findPeopleByName = function(personName, done) {
-  Person.find({name: personName}, function(err, name){
-    if(err) return console.log(err);
+  Person.find({ name: personName }, function(err, name) {
+    if (err) return console.log(err);
     done(null, name);
   });
 };
@@ -152,10 +151,10 @@ var findPeopleByName = function(personName, done) {
 // argument `food` as search key
 
 var findOneByFood = function(food, done) {
-  Person.findOne({favoriteFoods: food}, function(err, data){
-    if(err) return console.log(err);
+  Person.findOne({ favoriteFoods: food }, function(err, data) {
+    if (err) return console.log(err);
     done(null, data);
-  });  
+  });
 };
 
 /** 7) Use `Model.findById()` */
@@ -168,10 +167,10 @@ var findOneByFood = function(food, done) {
 // Use the function argument 'personId' as search key.
 
 var findPersonById = function(personId, done) {
-  Person.findById({_id: personId}, function(err, data){
-    if(err) return console.log(err);
+  Person.findById({ _id: personId }, function(err, data) {
+    if (err) return console.log(err);
     done(null, data);
-  });  
+  });
 };
 
 /** # CR[U]D part III - UPDATE # 
@@ -211,7 +210,7 @@ var findEditThenSave = function(personId, done) {
       done(null, data);
     });
   });
-}
+};
 
 /** 9) New Update : Use `findOneAndUpdate()` */
 
@@ -230,11 +229,17 @@ var findEditThenSave = function(personId, done) {
 
 var findAndUpdate = function(personName, done) {
   var ageToSet = 20;
-  Person.findOneAndUpdate({name: personName}, {age: ageToSet}, {new: true}, function(err, data){
-    if(err){done(err);}
-    done(null, data);
-  });
-  
+  Person.findOneAndUpdate(
+    { name: personName },
+    { age: ageToSet },
+    { new: true },
+    function(err, data) {
+      if (err) {
+        done(err);
+      }
+      done(null, data);
+    }
+  );
 };
 
 /** # CRU[D] part IV - DELETE #
@@ -247,12 +252,14 @@ var findAndUpdate = function(personName, done) {
 // previous update methods. They pass the removed document to the cb.
 // As usual, use the function argument `personId` as search key.
 
-var removeById = function(personId, done) {
-  Person.findByIdAndRemove({_id: personId}, function(err, data){
-    if(err){done(err);}
+/*var removeById = function(personId, done) {
+  Person.findByIdAndRemove({ _id: personId }, function(err, data) {
+    if (err) {
+      done(err);
+    }
     done(null, data);
   });
-};
+};*/
 
 /** 11) Delete many People */
 
@@ -264,13 +271,15 @@ var removeById = function(personId, done) {
 // containing the outcome of the operation, and the number of items affected.
 // Don't forget to pass it to the `done()` callback, since we use it in tests.
 
-var removeManyPeople = function(done) {
+/*var removeManyPeople = function(done) {
   var nameToRemove = "Mary";
-  Person.deleteMany({name: nameToRemove}, {new: true}, function(err, data){
-    if(err){done(err)};
+  Person.deleteMany({ name: nameToRemove }, function(err, data) {
+    if (err) {
+      done(err);
+    }
     done(null, data);
   });
-};
+};*/
 
 /** # C[R]UD part V -  More about Queries # 
 /*  ======================================= */
@@ -292,8 +301,18 @@ var removeManyPeople = function(done) {
 
 var queryChain = function(done) {
   var foodToSearch = "burrito";
-  
-  done(null/*, data*/);
+  Person
+    .find({ favouriteFoods: foodToSearch })
+    .sort({name: 1})
+    .limit(2)
+    .select("-age")
+    .exec(function(err, data) {
+      console.log(data);
+      if (err) {
+        done(err);
+      }
+      done(null, data);
+    });
 };
 
 /** **Well Done !!**
@@ -309,7 +328,6 @@ var queryChain = function(done) {
 // * Schema Virtuals and  Model, Static, and Instance methods,
 // * and much more in the [mongoose docs](http://mongoosejs.com/docs/)
 
-
 //----- **DO NOT EDIT BELOW THIS LINE** ----------------------------------
 
 exports.PersonModel = Person;
@@ -320,6 +338,6 @@ exports.findPersonById = findPersonById;
 exports.findEditThenSave = findEditThenSave;
 exports.findAndUpdate = findAndUpdate;
 exports.createManyPeople = createManyPeople;
-exports.removeById = removeById;
-exports.removeManyPeople = removeManyPeople;
+//exports.removeById = removeById;
+//exports.removeManyPeople = removeManyPeople;
 exports.queryChain = queryChain;
